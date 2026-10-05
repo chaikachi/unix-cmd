@@ -3,9 +3,11 @@ import socket
 import sys
 import json
 
+vfs_data = {}
 def load_vfs(json_path):
     if not os.path.exists(json_path):
         print(f"Loading error VFS: File '{json_path}' not found.")
+        return False
     try:
         with open(json_path, "r", encoding="utf-8") as f:
             global vfs_data
@@ -13,7 +15,7 @@ def load_vfs(json_path):
         return True
     except json.JSONDecodeError:
         print("Loading error VFS: wrong format JSON.")
-    return True
+        return False
 
 def welcome_to_input():
     username = os.getlogin()
