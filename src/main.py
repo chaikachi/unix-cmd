@@ -1,6 +1,19 @@
 import os
 import socket
 import sys
+import json
+
+def load_vfs(json_path):
+    if not os.path.exists(json_path):
+        print(f"Loading error VFS: File '{json_path}' not found.")
+    try:
+        with open(json_path, "r", encoding="utf-8") as f:
+            global vfs_data
+            vfs_data = json.load(f)
+        return True
+    except json.JSONDecodeError:
+        print("Loading error VFS: wrong format JSON.")
+    return True
 
 def welcome_to_input():
     username = os.getlogin()
@@ -25,6 +38,17 @@ def commands(commnd,arg):
             print("[cd] Wrong arguments")
         else:
             print(f"[cd] Arguments: {arg}")
+        return True
+    elif commnd=="vfs-save":
+        if not arg:
+            print("Wrong arguments")
+            return True
+        try:
+            with open(arg[0], "w", encoding="utf-8") as f:
+                json.dump(vfs_data, f, indent=2, ensure_ascii=False)
+            print(f"Successfully save into '{arg[0]}'")
+        except Exception as e:
+            print(f"Saving error VFS: {e}")
         return True
     else:
         print(f"Wrong command {commnd}")
@@ -56,13 +80,17 @@ def start():
     if len(sys.argv)>3:
         script = sys.argv[3]
     else:
-        script = ""
+        script=""
+
     print(f"VFS: {vfs}")
     print(f"REPL: {invite}")
-    print(f"Путь к стартовому скрипту: {script}")
+    print(f"Starter script path: {script}")
+    if not load_vfs(vfs):
+        return
+    if script:
+        if not run_start_script(script, invite):
+            return
     interactive_invite = welcome_to_input()
-    if not run_start_script(script, invite):
-        return   
     while True:
         inputt = input(interactive_invite+" ")
         parser = inputt.strip().split()
