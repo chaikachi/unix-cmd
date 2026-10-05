@@ -1,0 +1,47 @@
+{
+  "/": {
+    "type": "dir",
+    "content": [
+      "home",
+      "var"
+    ]
+  },
+  "/home": {
+    "type": "dir",
+    "content": [
+      "user"
+    ]
+  },
+  "/home/user": {
+    "type": "dir",
+    "content": [
+      "docs"
+    ]
+  },
+  "/home/user/docs": {
+    "type": "dir",
+    "content": [
+      "readme.txt"
+    ]
+  },
+  "/home/user/docs/readme.txt": {
+    "type": "file",
+    "content": "'wwww'"
+  },
+  "/var": {
+    "type": "dir",
+    "content": [
+      "log"
+    ]
+  },
+  "/var/log": {
+    "type": "dir",
+    "content": [
+      "syslog.txt"
+    ]
+  },
+  "/var/log/syslog.txt": {
+    "type": "file",
+    "content": "logs"
+  }
+}
