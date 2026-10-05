@@ -1,0 +1,6 @@
+ls
+ls home
+cd
+cd /home
+www
+exit
