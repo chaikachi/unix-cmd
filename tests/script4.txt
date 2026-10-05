@@ -1,0 +1,21 @@
+ls
+cd /home/user/docs
+ls
+cp readme.txt copy_readme.txt
+ls
+mv copy_readme.txt moved_readme.txt
+ls
+cp non_existent.txt new.txt
+mv ghost.txt archive.txt
+vfs-save vfs.txt
+vfs-save vfs.json
+rev diref
+whoami
+whoami i
+who
+ls /var/log
+ls logs
+cd houm
+apply
+end
+
