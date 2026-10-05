@@ -1,0 +1,8 @@
+ls
+cd
+vfs-save backup.json
+vfs-save backup.txt
+cd ~
+rev abcd
+whoami
+who
