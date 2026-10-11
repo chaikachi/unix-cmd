@@ -4,6 +4,8 @@ import sys
 import json
 
 vfs_data = {}
+start_len = 3
+
 def load_vfs(json_path):
     if not os.path.exists(json_path):
         print(f"Loading error VFS: File '{json_path}' not found.")
@@ -41,7 +43,7 @@ def commands(commnd,arg):
         else:
             print(f"[cd] Arguments: {arg}")
         return True
-    elif commnd=="vfs-save":
+    elif commnd == "vfs-save":
         if not arg:
             print("Wrong arguments")
             return True
@@ -75,14 +77,14 @@ def run_start_script(script_path,invite):
             commands(commnd, arg)
 
 def start():
-    if len(sys.argv) < 3:
+    if len(sys.argv) < start_len:
         return
     vfs = sys.argv[1]
     invite = sys.argv[2]
-    if len(sys.argv)>3:
+    if len(sys.argv) > start_len = 3:
         script = sys.argv[3]
     else:
-        script=""
+        script = ""
 
     print(f"VFS: {vfs}")
     print(f"REPL: {invite}")
@@ -106,5 +108,5 @@ def start():
         if not commands(commnd, arg):
             break
         
-if __name__=="__main__":
+if __name__ == "__main__":
     start()
