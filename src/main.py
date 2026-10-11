@@ -2,6 +2,8 @@ import os
 import socket
 import sys
 
+start_len = 3
+
 def welcome_to_input():
     username = os.getlogin()
     hostname = socket.gethostname()
@@ -49,11 +51,11 @@ def run_start_script(script_path,invite):
             commands(commnd, arg)
 
 def start():
-    if len(sys.argv) < 3:
+    if len(sys.argv) < start_len:
         return
     vfs = sys.argv[1]
     invite = sys.argv[2]
-    if len(sys.argv)>3:
+    if len(sys.argv) > start_len:
         script = sys.argv[3]
     else:
         script = ""
@@ -76,5 +78,5 @@ def start():
         if not commands(commnd, arg):
             break
         
-if __name__=="__main__":
+if __name__ == "__main__":
     start()
