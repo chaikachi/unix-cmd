@@ -24,36 +24,43 @@ def welcome_to_input():
     hostname = socket.gethostname()
     return f"{username}@{hostname}:~$"
 
+def command_exit(arg):
+    if arg:
+        print("Command doesn't receive arguments")
+        return True
+    else:
+        return False
+        
+def command_vfs_save(arg):
+    if not arg:
+        print("Wrong arguments")
+    try:
+        with open(arg[0], "w", encoding="utf-8") as f:
+            json.dump(vfs_data, f, indent=2, ensure_ascii=False)
+        print(f"Successfully save into '{arg[0]}'")
+    except Exception as e:
+        print(f"Saving error VFS: {e}")
+    return True
+
+def command_ls(arg):
+    if not arg:
+        print(f"[ls] Arguments: none")
+    else:
+        print(f"[ls] Arguments: {arg}")
+    return True
+
+def command_cd(arg):
+     if not arg:
+         print("[cd] Wrong arguments")
+     else:
+        print(f"[cd] Arguments: {arg}")
+    return True    
+
 def commands(commnd,arg):
-    if commnd == "exit":
-        if arg:
-            print("Command doesn't receive arguments")
-            return True
-        else:
-            return False
-    elif commnd == "ls":
-        if not arg:
-            print(f"[ls] Arguments: none")
-        else:
-            print(f"[ls] Arguments: {arg}")
-        return True
-    elif commnd == "cd":
-        if not arg:
-            print("[cd] Wrong arguments")
-        else:
-            print(f"[cd] Arguments: {arg}")
-        return True
-    elif commnd == "vfs-save":
-        if not arg:
-            print("Wrong arguments")
-            return True
-        try:
-            with open(arg[0], "w", encoding="utf-8") as f:
-                json.dump(vfs_data, f, indent=2, ensure_ascii=False)
-            print(f"Successfully save into '{arg[0]}'")
-        except Exception as e:
-            print(f"Saving error VFS: {e}")
-        return True
+    if commnd == "exit": return command_exit(arg)
+    elif commnd == "ls": return command_ls(arg)
+    elif commnd == "cd": return command_cd(arg)
+    elif commnd == "vfs-save": return command_vfs_save(arg)
     else:
         print(f"Wrong command {commnd}")
         return True
