@@ -14,6 +14,13 @@ def load_vfs(json_path):
         with open(json_path, "r", encoding="utf-8") as f:
             global vfs_data
             vfs_data = json.load(f)
+            for path, info in vfs_data.items():
+                if info.get("type") == "file" and "content" in info:
+                    encoded_text = info["content"]
+                    try:
+                        info["content"] = base64.b64decode(encoded_text.encode('utf-8')).decode('utf-8')
+                    except Exception:
+                        pass
         return True
     except json.JSONDecodeError:
         print("Loading error VFS: wrong format JSON.")
@@ -35,9 +42,16 @@ def command_vfs_save(arg):
     if not arg:
         print("Wrong arguments")
     try:
-        with open(arg[0], "w", encoding="utf-8") as f:
+        export_data = {}
+        for path, info in vfs_data.items():
+            item_copy = info.copy()
+            if item_copy.get("type") == "file" and "content" in item_copy:
+                file_text = item_copy["content"]
+                item_copy["content"] = base64.b64encode(file_text.encode('utf-8')).decode('utf-8')
+            export_data[path] = item_copy
+        with open(arg, "w", encoding="utf-8") as f:
             json.dump(vfs_data, f, indent=2, ensure_ascii=False)
-        print(f"Successfully save into '{arg[0]}'")
+        print(f"Successfully save into '{arg}'")
     except Exception as e:
         print(f"Saving error VFS: {e}")
     return True
