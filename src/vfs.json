@@ -1,47 +1,112 @@
 {
   "/": {
+    "name":".",
+    "rights": "drwxr-xr-x",
+    "links": "6",
+    "admin": "admin",
+    "group": "group",
+    "size": 1024,
+    "date": "Jan 01 00:00",
     "type": "dir",
-    "content": [
-      "home",
-      "var"
-    ]
+    "content": ["home","var"]
   },
   "/home": {
     "type": "dir",
-    "content": [
-      "user"
-    ]
+    "name":"home",
+    "rights": "drwxr-xr-x",
+    "links": "4",
+    "admin": "admin",
+    "group": "group",
+    "content": ["user"],
+    "size": 14078543,
+    "date": "Oct 16 12:35"
   },
   "/home/user": {
     "type": "dir",
-    "content": [
-      "docs"
-    ]
+    "name": "user",
+    "rights": "drwxr-xr-x",
+    "links": "3",
+    "admin": "admin",
+    "group": "group",
+    "content": ["docs"],
+    "size": 8364731,
+    "date": "Oct 14 01:11"
   },
   "/home/user/docs": {
     "type": "dir",
-    "content": [
-      "readme.txt"
-    ]
+    "name": "docs",
+    "rights": "drwxr-xr-x",
+    "links": "5",
+    "admin": "admin",
+    "group": "group",
+    "size": 10927465,
+    "date": "Oct 25 09:34",
+    "content": ["readme.txt", ".script.txt", "test.txt"]
   },
   "/home/user/docs/readme.txt": {
+    "name":"readme.txt",
+    "rights": "-rwxr-xr-x",
+    "links": "1",
+    "admin": "admin",
+    "group": "group",
+    "size": 15,
+    "date": "Oct 21 14:55",
     "type": "file",
-    "content": "'wwww'"
+    "content": "J3d3d3cn"
+  },
+    "/home/user/docs/.script.txt": {
+    "name":".script.txt",
+    "rights": "-rwxr-xr-x",
+    "links": "1",
+    "admin": "admin",
+    "group": "group",
+    "size": 21,
+    "date": "Oct 21 14:57",
+    "type": "file",
+    "content": "QWJyYWNhZGFicmE="
+  },
+    "/home/user/docs/test.txt": {
+    "name":"test.txt",
+    "rights": "-rwxr-xr-x",
+    "links": "1",
+    "admin": "admin",
+    "group": "group",
+    "size": 2089,
+    "date": "Oct 21 14:59",
+    "type": "file",
+    "content": "T3dP"
   },
   "/var": {
+    "name":"var",
+    "rights": "drwxr-xr-x",
+    "links": "3",
+    "admin": "admin",
+    "group": "group",
+    "size": 1029437577,
+    "date": "Aug 15 12:00",
     "type": "dir",
-    "content": [
-      "log"
-    ]
+    "content": ["log"]
   },
   "/var/log": {
+    "name":"log",
+    "rights": "drwxr-xr-x",
+    "links": "4",
+    "admin": "admin",
+    "group": "group",
+    "size": 817363,
+    "date": "Sep 08 03:09",
     "type": "dir",
-    "content": [
-      "syslog.txt"
-    ]
+    "content": ["syslog.txt"]
   },
   "/var/log/syslog.txt": {
+    "name":"syslog.txt",
+    "rights": "-rwxr-xr-x",
+    "links": "1",
+    "admin": "admin",
+    "group": "group",
+    "size": 20097,
+    "date": "Oct 21 15:05",    
     "type": "file",
-    "content": "logs"
+    "content": "YWxsIHN5c3RlbSBsb2dz"
   }
 }
