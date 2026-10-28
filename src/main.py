@@ -2,6 +2,7 @@ import os
 import socket
 import sys
 import json
+import base64
 
 vfs_data = {}
 cur_path="/"
@@ -25,7 +26,8 @@ def load_vfs(json_path):
                 if info.get("type") == "file" and "content" in info:
                     encoded_text = info["content"]
                     try:
-                        info["content"] = base64.b64decode(encoded_text.encode('utf-8')).decode('utf-8')
+                        b_text=encoded_text.encode('utf-8')
+                        info["content"] = base64.b64decode(b_text).decode('utf-8')
                     except Exception:
                         pass
         return True
@@ -67,7 +69,8 @@ def command_vfs_save(arg):
             item_copy = info.copy()
             if item_copy.get("type") == "file" and "content" in item_copy:
                 file_text = item_copy["content"]
-                item_copy["content"] = base64.b64encode(file_text.encode('utf-8')).decode('utf-8')
+                b_text=file_text.encode('utf-8')
+                item_copy["content"] = base64.b64encode(b_text).decode('utf-8')
             export_data[path] = item_copy
         with open(arg, "w", encoding="utf-8") as f:
             json.dump(vfs_data, f, indent=2, ensure_ascii=False)
