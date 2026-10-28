@@ -2,6 +2,7 @@ import os
 import socket
 import sys
 import json
+import base64
 
 vfs_data = {}
 start_len = 3
@@ -18,7 +19,8 @@ def load_vfs(json_path):
                 if info.get("type") == "file" and "content" in info:
                     encoded_text = info["content"]
                     try:
-                        info["content"] = base64.b64decode(encoded_text.encode('utf-8')).decode('utf-8')
+                        b_text=encoded_text.encode('utf-8')
+                        info["content"] = base64.b64decode(b_text).decode('utf-8')
                     except Exception:
                         pass
         return True
@@ -37,7 +39,7 @@ def command_exit(arg):
         return True
     else:
         return False
-        
+
 def command_vfs_save(arg):
     if not arg:
         print("Wrong arguments")
@@ -47,7 +49,8 @@ def command_vfs_save(arg):
             item_copy = info.copy()
             if item_copy.get("type") == "file" and "content" in item_copy:
                 file_text = item_copy["content"]
-                item_copy["content"] = base64.b64encode(file_text.encode('utf-8')).decode('utf-8')
+                b_text=file_text.encode('utf-8')
+                item_copy["content"] = base64.b64encode(b_text).decode('utf-8')
             export_data[path] = item_copy
         with open(arg, "w", encoding="utf-8") as f:
             json.dump(vfs_data, f, indent=2, ensure_ascii=False)
@@ -62,19 +65,23 @@ def command_ls(arg):
     else:
         print(f"[ls] Arguments: {arg}")
     return True
-
+    
 def command_cd(arg):
-     if not arg:
-         print("[cd] Wrong arguments")
-     else:
-        print(f"[cd] Arguments: {arg}")
-    return True    
+	if not arg:
+		print("[cd] Wrong arguments")
+	else:
+		print(f"[cd] Arguments: {arg}")
+	return True
 
 def commands(commnd,arg):
-    if commnd == "exit": return command_exit(arg)
-    elif commnd == "ls": return command_ls(arg)
-    elif commnd == "cd": return command_cd(arg)
-    elif commnd == "vfs-save": return command_vfs_save(arg)
+    if commnd == "exit":
+        return command_exit(arg)
+    elif commnd == "ls":
+        return command_ls(arg)
+    elif commnd == "cd":
+        return command_cd(arg)
+    elif commnd == "vfs-save":
+        return command_vfs_save(arg)
     else:
         print(f"Wrong command {commnd}")
         return True
@@ -96,17 +103,15 @@ def run_start_script(script_path,invite):
             else:
                 arg = ""
             commands(commnd, arg)
-
 def start():
     if len(sys.argv) < start_len:
         return
     vfs = sys.argv[1]
     invite = sys.argv[2]
-    if len(sys.argv) > start_len = 3:
+    if len(sys.argv) > start_len:
         script = sys.argv[3]
     else:
         script = ""
-
     print(f"VFS: {vfs}")
     print(f"REPL: {invite}")
     print(f"Starter script path: {script}")
@@ -128,6 +133,6 @@ def start():
             arg = ""
         if not commands(commnd, arg):
             break
-        
+
 if __name__ == "__main__":
     start()
