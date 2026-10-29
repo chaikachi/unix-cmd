@@ -5,8 +5,9 @@ import json
 import base64
 
 vfs_data = {}
-cur_path="/"
+cur_path = "/"
 start_len = 3
+mvcp_len = 2
 byte = 1024
 
 def welcome_to_input():
@@ -26,8 +27,8 @@ def load_vfs(json_path):
                 if info.get("type") == "file" and "content" in info:
                     encoded_text = info["content"]
                     try:
-                        b_text=encoded_text.encode('utf-8')
-                        info["content"] = base64.b64decode(b_text).decode('utf-8')
+                        entx=encoded_text.encode('utf-8')
+                        info["content"] = base64.b64decode(entx).decode('utf-8')
                     except Exception:
                         pass
         return True
@@ -59,7 +60,59 @@ def child_path(t_path, flag_a, flag_l, flag_h):
         path_info["name"] = name
         all_files.append(path_info)
     return command_ls_l(command_ls_a(all_files, flag_a), flag_l, flag_h)
+                
+def file_path(filepath):
+    parts = filepath.strip("/").split("/")
+    file_name = parts[-1]
+    p_dir = "/" + "/".join(parts[:-1])
+    p_dir = p_dir.replace("//", "/")
+    return p_dir, file_name
+
+def move_file(filepath,commnd):
+    p_dir, file_name = file_path(filepath)
+    if p_dir in vfs_data:
+        if commnd == "cp":
+            content = vfs_data[p_dir].setdefault("content", [])
+            if file_name not in content:
+                content.append(file_name)
+        else:
+            content = vfs_data[p_dir].get("content", [])
+            if file_name in content:
+                content.remove(file_name)
+
+def command_cp(arg):
+    parts = arg.split()
+    if len(parts) < mvcp_len:
+        print("Wrong arguments")
+        return True
+    src_path = abs_path(parts[0])
+    dst_path = abs_path(parts[1])
     
+    if src_path not in vfs_data:
+        print(f"File or directory not found")
+        return True
+    vfs_data[dst_path] = dict(vfs_data[src_path])
+    move_file(dst_path,"cp")
+    return True
+
+def command_mv(arg):
+    parts = arg.split()
+    if len(parts) < mvcp_len:
+        print("Wrong arguments")
+        return True
+    src_path = abs_path(parts[0])
+    dst_path = abs_path(parts[1])
+    
+    if src_path not in vfs_data:
+        print(f"File or directory not found")
+        return True
+    vfs_data[dst_path] = dict(vfs_data[src_path])
+    move_file(dst_path,"cp")
+    
+    del vfs_data[src_path]
+    move_file(src_path,"mv")
+    return True
+
 def command_vfs_save(arg):
     if not arg:
         print("Wrong arguments")
@@ -69,8 +122,8 @@ def command_vfs_save(arg):
             item_copy = info.copy()
             if item_copy.get("type") == "file" and "content" in item_copy:
                 file_text = item_copy["content"]
-                b_text=file_text.encode('utf-8')
-                item_copy["content"] = base64.b64encode(b_text).decode('utf-8')
+                entx=file_text.encode('utf-8')
+                item_copy["content"] = base64.b64encode(entx).decode('utf-8')
             export_data[path] = item_copy
         with open(arg, "w", encoding="utf-8") as f:
             json.dump(vfs_data, f, indent=2, ensure_ascii=False)
@@ -185,9 +238,11 @@ def commands(commnd,arg,flag_a = False, flag_h = False, flag_l = False):
     elif commnd == "ls": return command_ls(arg, flag_a, flag_h, flag_l)
     elif commnd == "cd": return command_cd(arg)
     elif commnd == "vfs-save": return command_vfs_save(arg)
+    elif commnd == "cp": return command_cp(arg)
+    elif commnd == "mv": return command_mv(arg)
     elif commnd == "rev": return command_rev(arg)
     elif commnd == "who": return command_who()
-    elif commnd == "whoami": return command_whoami(arg)  
+    elif commnd == "whoami": return command_whoami(arg)
     else:
         print(f"Wrong command {commnd}")
         return True
