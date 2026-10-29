@@ -27,8 +27,8 @@ def load_vfs(json_path):
                 if info.get("type") == "file" and "content" in info:
                     encoded_text = info["content"]
                     try:
-                        b_text=encoded_text.encode('utf-8')
-                        info["content"] = base64.b64decode(b_text).decode('utf-8')
+                        entx=encoded_text.encode('utf-8')
+                        info["content"] = base64.b64decode(entx).decode('utf-8')
                     except Exception:
                         pass
         return True
@@ -122,8 +122,8 @@ def command_vfs_save(arg):
             item_copy = info.copy()
             if item_copy.get("type") == "file" and "content" in item_copy:
                 file_text = item_copy["content"]
-                b_text=file_text.encode('utf-8')
-                item_copy["content"] = base64.b64encode(b_text).decode('utf-8')
+                entx=file_text.encode('utf-8')
+                item_copy["content"] = base64.b64encode(entx).decode('utf-8')
             export_data[path] = item_copy
         with open(arg, "w", encoding="utf-8") as f:
             json.dump(vfs_data, f, indent=2, ensure_ascii=False)
@@ -242,7 +242,7 @@ def commands(commnd,arg,flag_a = False, flag_h = False, flag_l = False):
     elif commnd == "mv": return command_mv(arg)
     elif commnd == "rev": return command_rev(arg)
     elif commnd == "who": return command_who()
-    elif commnd == "whoami": return command_whoami(arg)  
+    elif commnd == "whoami": return command_whoami(arg)
     else:
         print(f"Wrong command {commnd}")
         return True
